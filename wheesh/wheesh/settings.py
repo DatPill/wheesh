@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'wishlists',
+    'users',
 ]
 
 MIDDLEWARE = [
