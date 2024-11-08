@@ -1,0 +1,50 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" href="{% static "vendor/css/login.css" %}" />
+{% endblock css %}
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center align-items-center vh-100">
+      <div class="col-md-7 col-lg-4">
+        <div class="card shadow border-0">
+          <div class="card-body p-4">
+            <h3 class="text-center mb-4">
+              <b>Whee</b>sh
+            </h3>
+            <form action="{% url "users:login" %}" method="post">
+              {% csrf_token %}
+              {% if form.errors %}<div class="alert alert-danger">{{ form.errors }}</div>{% endif %}
+              <!-- Email input -->
+              <div class="mb-3">
+                <label for="{{ form.username.id_for_label }}" class="form-label">Имя пользователя</label>
+                {{ form.username }}
+              </div>
+              <!-- Password input -->
+              <div class="mb-3">
+                <label for="{{ form.password.id_for_label }}" class="form-label">Пароль</label>
+                {{ form.password }}
+              </div>
+              <!-- Submit button -->
+              <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-purple">Войти</button>
+              </div>
+              <!-- Forgot password link -->
+              <div class="text-center">
+                <a href="#" class="text-decoration-none text-secondary">Забыли пароль?</a>
+              </div>
+            </form>
+            <!-- Register link -->
+            <div class="text-center mt-3">
+              <p class="text-secondary mb-0">
+                Нет аккаунта?
+                <a href="{% url "users:register" %}"
+                   class="text-decoration-none text-purple">Регистрация</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

@@ -21,7 +21,7 @@
     <body>
         <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#"><b>Whee</b>sh</a>
+                <a class="navbar-brand" href="{% url "index" %}"><b>Whee</b>sh</a>
                 <button class="navbar-toggler"
                         type="button"
                         data-bs-toggle="collapse"
@@ -35,77 +35,80 @@
                     <div class="vr me-2 d-none d-lg-block"></div>
                     <ul class="navbar-nav mb-0 mb-lg-0 me-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Домой</a>
+                            <a class="nav-link active" href="#">Я хочу</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Я дарю</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Я хочу</a>
-                        </li>
                     </ul>
-                    <!-- Sign up and login -->
-                    <ul class="navbar-nav mb-2 mb-lg-0">
-                        <li class="nav-item d-none d-lg-block">
-                            <a href="users/login.html" class="nav-link">Вход</a>
-                        </li>
-                        <li class="nav-item d-none d-lg-block">
-                            <a href="users/register.html" class="btn btn-dark">Регистрация</a>
-                        </li>
-                        <hr class="bg-dark border-2 border-top border-dark d-flex d-lg-none" />
-                        <li class="nav-item d-flex d-lg-none mt-1">
-                            <a href="users/login.html" class="nav-link">Вход</a>
-                            <a href="users/register.html" class="btn btn-dark ms-2">Регистрация</a>
-                        </li>
-                    </ul>
-                    <!-- If user is logged -->
-                    <ul class="navbar-nav mb-2 mb-lg-0">
-                        <li class="nav-item d-none d-lg-block">
-                            <div class="btn-group">
-                                <a class="nav-link dropdown-toggle py-1"
-                                   href="#"
-                                   id="navbarDropdown"
-                                   role="button"
-                                   data-bs-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <img src="{% static "vendor/img/user-image-placeholder.png" %}" alt="User Avatar" class="rounded-circle" width="30" height="30" />
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end"
-                                    aria-labelledby="navbarDropdown">
-                                    <li>
-                                        <a class="dropdown-item" href="#">Профиль</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">Мои вишлисты</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">Мои подарки</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">Админ-панель</a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider" />
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">Выйти</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item d-block d-lg-none">
-                            <p class="my-2">Hello, username!</p>
-                        </li>
-                        <li class="nav-item d-block d-lg-none">
-                            <a href="#" class="nav-link">Профиль</a>
-                        </li>
-                        <li class="nav-item d-block d-lg-none">
-                            <a href="#" class="nav-link">Админ-панель</a>
-                        </li>
-                        <li class="nav-item d-block d-lg-none">
-                            <a href="#" class="nav-link">Выйти</a>
-                        </li>
-                    </ul>
+                    {% if user.is_authenticated %}
+                        <ul class="navbar-nav mb-2 mb-lg-0">
+                            <li class="nav-item d-none d-lg-block">
+                                <div class="btn-group">
+                                    <a class="nav-link dropdown-toggle py-1"
+                                       href="#"
+                                       id="navbarDropdown"
+                                       role="button"
+                                       data-bs-toggle="dropdown"
+                                       aria-expanded="false">
+                                        <img src="{% static "vendor/img/user-image-placeholder.png" %}" alt="User Avatar" class="rounded-circle" width="30" height="30" />
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end"
+                                        aria-labelledby="navbarDropdown">
+                                        <li>
+                                            <a class="dropdown-item" href="#">Профиль</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Мои вишлисты</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Мои подарки</a>
+                                        </li>
+                                        {% if user.is_superuser %}
+                                            <li>
+                                                <a class="dropdown-item" href="#">Админ-панель</a>
+                                            </li>
+                                        {% endif %}
+                                        <li>
+                                            <hr class="dropdown-divider" />
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{% url "users:logout" %}">Выйти</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <hr class="d-blok d-lg-none" />
+                            <li class="nav-item d-block d-lg-none">
+                                <p class="my-2">{{ user.get_username }}</p>
+                            </li>
+                            <li class="nav-item d-block d-lg-none">
+                                <a href="#" class="nav-link">Профиль</a>
+                            </li>
+                            {% if user.is_superuser %}
+                                <li class="nav-item d-block d-lg-none">
+                                    <a href="#" class="nav-link">Админ-панель</a>
+                                </li>
+                            {% endif %}
+                            <li class="nav-item d-block d-lg-none">
+                                <a href="{% url "users:logout" %}" class="nav-link">Выйти</a>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <ul class="navbar-nav mb-2 mb-lg-0">
+                            <li class="nav-item d-none d-lg-block">
+                                <a href="{% url "users:login" %}" class="nav-link">Вход</a>
+                            </li>
+                            <li class="nav-item d-none d-lg-block">
+                                <a href="{% url "users:register" %}" class="btn btn-dark">Регистрация</a>
+                            </li>
+                            <hr class="bg-dark border-2 border-top border-dark d-flex d-lg-none" />
+                            <li class="nav-item d-flex d-lg-none mt-1">
+                                <a href="{% url "users:login" %}" class="nav-link">Вход</a>
+                                <a href="{% url "users:register" %}" class="btn btn-dark ms-2">Регистрация</a>
+                            </li>
+                        </ul>
+                    {% endif %}
                 </div>
             </div>
         </nav>

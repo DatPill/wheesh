@@ -8,6 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view(), name='index'),
     path('wishlists/', include('wishlists.urls', namespace='wishlists')),
+    path('users/', include('users.urls', namespace='users')),
 ]
 
 if settings.DEBUG:
