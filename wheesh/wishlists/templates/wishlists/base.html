@@ -51,12 +51,12 @@
                                        role="button"
                                        data-bs-toggle="dropdown"
                                        aria-expanded="false">
-                                        <img src="{% static "vendor/img/user-image-placeholder.png" %}" alt="User Avatar" class="rounded-circle" width="30" height="30" />
+                                        <img src="{% if user.image %}{{ user.image.url }}{% else %}{% static "vendor/img/user-image-placeholder.png" %}{% endif %}" alt="User Avatar" class="rounded-circle" width="30" height="30" />
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end"
                                         aria-labelledby="navbarDropdown">
                                         <li>
-                                            <a class="dropdown-item" href="#">Профиль</a>
+                                            <a class="dropdown-item" href="{% url "users:profile" %}">Профиль</a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item" href="#">Мои вишлисты</a>
@@ -66,7 +66,7 @@
                                         </li>
                                         {% if user.is_superuser %}
                                             <li>
-                                                <a class="dropdown-item" href="#">Админ-панель</a>
+                                                <a class="dropdown-item" href="{% url "admin:index" %}">Админ-панель</a>
                                             </li>
                                         {% endif %}
                                         <li>
@@ -83,11 +83,11 @@
                                 <p class="my-2">{{ user.get_username }}</p>
                             </li>
                             <li class="nav-item d-block d-lg-none">
-                                <a href="#" class="nav-link">Профиль</a>
+                                <a href="{% url "users:profile" %}" class="nav-link">Профиль</a>
                             </li>
                             {% if user.is_superuser %}
                                 <li class="nav-item d-block d-lg-none">
-                                    <a href="#" class="nav-link">Админ-панель</a>
+                                    <a href="{% url "admin:index" %}" class="nav-link">Админ-панель</a>
                                 </li>
                             {% endif %}
                             <li class="nav-item d-block d-lg-none">
