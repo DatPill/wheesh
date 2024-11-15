@@ -26,3 +26,9 @@ body {
   border-color: #75c7f0;
   border-width: 4px;
 }
+
+.form-control-readonly {
+  background-color: #e9ecef;
+  opacity: 1;
+  cursor: not-allowed;
+}

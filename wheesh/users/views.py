@@ -1,6 +1,8 @@
 from typing import Any
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models.base import Model as Model
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
@@ -9,11 +11,12 @@ from users.forms import UserLoginForm, UserProfileForm, UserRegistrationForm
 from .models import User
 
 
-class UserRegistrationView(CreateView):
+class UserRegistrationView(SuccessMessageMixin, CreateView):
     template_name = 'users/register.html'
     form_class = UserRegistrationForm
     model = User
     success_url = reverse_lazy('users:login')
+    success_message = 'Вы успешно зарегистрировались!'
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context: dict[str, Any] = super().get_context_data(**kwargs)
@@ -34,11 +37,11 @@ class UserLoginView(LoginView):
         return context
 
 
-class UserLogoutView(LogoutView):
+class UserLogoutView(LoginRequiredMixin, LogoutView):
     next_page = '/'
 
 
-class UserProfileView(UpdateView):
+class UserProfileView(LoginRequiredMixin, UpdateView):
     template_name = 'users/profile.html'
     model = User
     form_class = UserProfileForm
@@ -50,7 +53,7 @@ class UserProfileView(UpdateView):
 
 
     def get_form_kwargs(self) -> dict[str, Any]:
-        kwargs = super().get_form_kwargs()
+        kwargs: dict[str, Any] = super().get_form_kwargs()
 
         if self.request.method in ("POST", "PUT"):
             kwargs.update(

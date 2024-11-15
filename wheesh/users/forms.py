@@ -31,8 +31,8 @@ class UserProfileForm(UserChangeForm):
     image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control', 'id': 'profilePicInput', 'onchange': 'previewImage(event)'}), required=False)
     first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True, 'disabled': True}))
-    email = forms.CharField(widget=forms.EmailInput(attrs={'class': 'form-control', 'readonly': True, 'disabled': True}), required=False)
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control-readonly form-control', 'id': 'disabledTextInput', 'readonly': True}))
+    email = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control-readonly form-control', 'id': 'disabledTextInput', 'readonly': True}))
 
 
     class Meta:
