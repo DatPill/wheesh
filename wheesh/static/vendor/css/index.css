@@ -1,35 +1,36 @@
 /* https://colorhunt.co/palette/ff8a8af4deb3f0eaaccce0ac */
 /* https://fonts.google.com/selection?preview.text=Wheesh */
 
-body {
-  font-family: "Rubik", sans-serif;
+html {
+  height: 100vh;
 }
 
-#hidden-area {
-  filter: blur(10px);
-  pointer-events: none;
-  opacity: 0.3;
+body {
+  font-family: "Rubik", sans-serif;
+  background: linear-gradient(180deg, #f0f4f8, #ffffff);
+  min-height: 100vh;
 }
 
 .btn-purple {
-  background-color: #ff8a8a;
-  color: white;
+  background-color: #6f42c1;
+  color: #fff;
+  transition: background-color 0.2s;
 }
 
 .btn-purple:hover {
-  background-color: #ff6161;
+  background-color: #5b34a0;
   color: white;
 }
 
 .btn-purple:active {
-  border-color: #ff6161 !important;
-  color: #ff6161 !important;
+  border-color: #5b34a0 !important;
+  color: #5b34a0 !important;
 }
 
 .btn-purple:focus-visible {
-  background-color: #ff6161;
+  background-color: #5b34a0;
   color: white;
-  border-color: #75c7f0;
+  border-color: #7c46d8;
   border-width: 4px;
 }
 
@@ -42,4 +43,32 @@ body {
   max-height: 100%;
   max-width: 100%;
   object-fit: contain;
+}
+
+.highlight-section {
+  background: linear-gradient(145deg, #e0eaff, #ffffff);
+  padding: 40px 20px;
+  border-radius: 12px;
+}
+
+.feature-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.icon-feature {
+  font-size: 2.5rem;
+  color: #6f42c1;
+}
+
+.custom-divider {
+  width: 50px;
+  height: 4px;
+  background-color: #6f42c1;
+  margin: 20px auto;
+  border-radius: 2px;
 }

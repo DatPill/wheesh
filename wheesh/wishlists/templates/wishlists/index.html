@@ -4,75 +4,58 @@
   <link rel="stylesheet" href="{% static "vendor/css/index.css" %}" />
 {% endblock css %}
 {% block content %}
-  <div class="container-lg my-4">
-    <div class="row">
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
-        <div class="card h-100">
-          <div class="card-img-container">
-            <img src="{% static "vendor/img/present-placeholder.png" %}" class="card-img" alt="Card4" height="100%" width="100%" />
-          </div>
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">Карта 1</h5>
-            <p class="card-text text-secondary">Нет описания</p>
-            <div class="mt-auto">
-              <a href="#" class="btn btn-purple" target="_blank">Ссылка</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
-        <div class="card h-100">
-          <div class="card-img-container">
-            <img src="{% static "vendor/img/present-placeholder.png" %}" class="card-img" alt="Card4" height="100%" width="100%" />
-          </div>
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">12345678901234567890123456789012345678</h5>
-            <p class="card-text">1234567890123456789012345678901234567890</p>
-            <div class="mt-auto">
-              <a href="#" class="btn btn-purple" target="_blank">Ссылка</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
-        <div class="card h-100">
-          <div class="card-img-container">
-            <img src="{% static "vendor/img/present-placeholder.png" %}" class="card-img" alt="Card4" height="100%" width="100%" />
-          </div>
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">Карта 4</h5>
-            <p class="card-text">40 СИМВОЛОВ МАКСИМУМ!</p>
-            <div class="mt-auto">
-              <a href="#" class="btn btn-purple" target="_blank">Ссылка</a>
-            </div>
+  <div class="container-lg my-4 text-center">
+    <h1 class="display-5 fw-bold">Добро пожаловать на Wheesh</h1>
+    <p class="lead text-secondary mb-4">Идеальная платформа для создания и обмена вишлистами. С кем угодно.</p>
+    <p class="h5 mb-4">
+      Wheesh создан для того, чтобы вы могли легко создавать вишлисты к любому
+      событию — дню рождения, празднику или даже просто так! Делитесь своими
+      желаниями с близкими и упрощайте процесс выбора подарков.
+    </p>
+    {% if user.is_authenticated %}
+      <a href="#" class="btn btn-purple btn-lg mb-4">Мой вишлист</a>
+    {% else %}
+      <a href="{% url "users:register" %}" class="btn btn-purple btn-lg mb-4">Начать сейчас</a>
+    {% endif %}
+    <div class="custom-divider"></div>
+    <!-- Highlight Section -->
+    <div class="highlight-section my-5">
+      <h2 class="mb-4">Преимущества платформы</h2>
+      <div class="row g-4">
+        <div class="col-md-4 d-flex align-items-stretch">
+          <div class="p-4 rounded feature-card h-100 d-flex flex-column">
+            <i class="fas fa-hand-holding-heart icon-feature mb-3"></i>
+            <h5>
+              <b>Бронирование подарков</b>
+            </h5>
+            <p>
+              Ваши друзья могут забронировать подарок, исключая дублирование и
+              облегчая выбор.
+            </p>
           </div>
         </div>
-      </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
-        <div class="card h-100">
-          <div class="card-img-container">
-            <img src="{% static "vendor/img/present-placeholder.png" %}" class="card-img" alt="Card4" height="100%" width="100%" />
-          </div>
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">Карта 4</h5>
-            <p class="card-text">40 СИМВОЛОВ МАКСИМУМ!</p>
-            <div class="mt-auto">
-              <a href="#" class="btn btn-purple" target="_blank">Ссылка</a>
-            </div>
+        <div class="col-md-4 d-flex align-items-stretch">
+          <div class="p-4 rounded feature-card h-100 d-flex flex-column">
+            <i class="fas fa-lock icon-feature mb-3"></i>
+            <h5>
+              <b>Конфиденциальные списки</b>
+            </h5>
+            <p>
+              Ваши списки желаний видны только авторизованным пользователям.
+              Полная приватность!
+            </p>
           </div>
         </div>
-      </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
-        <div class="card h-100">
-          <div class="card-img-container">
-            <img src="{% static "vendor/img/present-placeholder.png" %}" class="card-img" alt="Card4" height="100%" width="100%" />
-          </div>
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">Карта 4</h5>
-            <p class="card-text">Ручку эту хочу просто жесть</p>
-            <div class="mt-auto">
-              <a href="#" class="btn btn-purple" target="_blank">Ссылка</a>
-            </div>
+        <div class="col-md-4 d-flex align-items-stretch">
+          <div class="p-4 rounded feature-card h-100 d-flex flex-column">
+            <i class="fas fa-gift icon-feature mb-3"></i>
+            <h5>
+              <b>Эффект сюрприза</b>
+            </h5>
+            <p>
+              Вы не увидите, какой подарок забронирован. Сохраните магию
+              неожиданности!
+            </p>
           </div>
         </div>
       </div>
