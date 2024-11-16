@@ -7,7 +7,7 @@ from wishlists.views import IndexView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view(), name='index'),
-    path('wishlists/', include('wishlists.urls', namespace='wishlists')),
+    path('wishlist/', include('wishlists.urls', namespace='wishlists')),
     path('users/', include('users.urls', namespace='users')),
 ]
 
