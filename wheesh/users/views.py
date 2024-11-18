@@ -1,5 +1,6 @@
 from typing import Any
 
+from common.mixins import CommonContextMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -11,38 +12,30 @@ from users.forms import UserLoginForm, UserProfileForm, UserRegistrationForm
 from .models import User
 
 
-class UserRegistrationView(SuccessMessageMixin, CreateView):
+class UserRegistrationView(CommonContextMixin, SuccessMessageMixin, CreateView):
     template_name = 'users/register.html'
+    title = 'Wheesh - Регистрация'
     form_class = UserRegistrationForm
     model = User
     success_url = reverse_lazy('users:login')
     success_message = 'Вы успешно зарегистрировались!'
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context: dict[str, Any] = super().get_context_data(**kwargs)
-        context['title'] = 'Wheesh - Регистрация'
 
-        return context
-
-class UserLoginView(LoginView):
+class UserLoginView(CommonContextMixin, LoginView):
     template_name = 'users/login.html'
+    title = 'Wheesh - Вход'
     next_page = '/'
     form_class = UserLoginForm
     model = User
-
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context: dict[str, Any] = super().get_context_data(**kwargs)
-        context['title'] = 'Wheesh - Вход'
-
-        return context
 
 
 class UserLogoutView(LoginRequiredMixin, LogoutView):
     next_page = '/'
 
 
-class UserProfileView(LoginRequiredMixin, UpdateView):
+class UserProfileView(CommonContextMixin, LoginRequiredMixin, UpdateView):
     template_name = 'users/profile.html'
+    title = 'Wheesh - Профиль'
     model = User
     form_class = UserProfileForm
     success_url = reverse_lazy('users:profile')
@@ -64,9 +57,3 @@ class UserProfileView(LoginRequiredMixin, UpdateView):
             )
 
         return kwargs
-
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context: dict[str, Any] = super().get_context_data(**kwargs)
-        context['title'] = 'Wheesh - Профиль'
-
-        return context

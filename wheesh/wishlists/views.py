@@ -1,23 +1,15 @@
 from typing import Any
 
+from common.mixins import CommonContextMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 
-class IndexView(TemplateView):
+class IndexView(CommonContextMixin, TemplateView):
     template_name = 'wishlists/index.html'
+    title = 'Wheesh'
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context: dict[str, Any] = super().get_context_data(**kwargs)
 
-        context['title'] = 'Wheesh'
-        return context
-
-class WishlistView(LoginRequiredMixin, TemplateView):
+class WishlistView(CommonContextMixin, LoginRequiredMixin, TemplateView):
     template_name = 'wishlists/wishlist.html'
-
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context: dict[str, Any] = super().get_context_data(**kwargs)
-
-        context['title'] = 'Мой вишлист'
-        return context
+    title = 'Мой вишлист'

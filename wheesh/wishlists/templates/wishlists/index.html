@@ -13,7 +13,8 @@
       желаниями с близкими и упрощайте процесс выбора подарков.
     </p>
     {% if user.is_authenticated %}
-      <a href="#" class="btn btn-purple btn-lg mb-4">Мой вишлист</a>
+      <a href="{% url "wishlists:personal" %}"
+         class="btn btn-purple btn-lg mb-4">Мой вишлист</a>
     {% else %}
       <a href="{% url "users:register" %}" class="btn btn-purple btn-lg mb-4">Начать сейчас</a>
     {% endif %}
