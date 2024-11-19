@@ -8,6 +8,7 @@ from django.db.models.base import Model as Model
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
 from users.forms import UserLoginForm, UserProfileForm, UserRegistrationForm
+from wishlists.models import Wishlist
 
 from .models import User
 
@@ -19,6 +20,12 @@ class UserRegistrationView(CommonContextMixin, SuccessMessageMixin, CreateView):
     model = User
     success_url = reverse_lazy('users:login')
     success_message = 'Вы успешно зарегистрировались!'
+
+
+    def form_valid(self, form):
+        user = form.save()
+        Wishlist.objects.create(title='Основной вишлист', user=user)
+        return super().form_valid(form)
 
 
 class UserLoginView(CommonContextMixin, LoginView):
