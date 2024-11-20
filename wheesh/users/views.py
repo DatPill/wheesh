@@ -4,12 +4,12 @@ from common.mixins import CommonContextMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models.base import Model as Model
+from django.db.models.base import Model
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
-from users.forms import UserLoginForm, UserProfileForm, UserRegistrationForm
 from wishlists.models import Wishlist
 
+from .forms import UserLoginForm, UserProfileForm, UserRegistrationForm
 from .models import User
 
 

@@ -37,6 +37,8 @@
       </div>
     </div>
   </div>
+{% endblock content %}
+{% block scripts %}
   <script>
   function previewImage(event) {
     const reader = new FileReader();
@@ -47,4 +49,4 @@
     reader.readAsDataURL(event.target.files[0]);
   }
   </script>
-{% endblock content %}
+{% endblock scripts %}
