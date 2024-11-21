@@ -15,76 +15,33 @@
           </div>
         </a>
       </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
-        <div class="card h-100 card-transition">
-          <div class="card-img-container">
-            <img src="{% static "vendor/img/present-placeholder.png" %}" class="card-img" alt="Card4" height="100%" width="100%" />
-          </div>
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">Карта 1</h5>
-            <p class="card-text text-secondary">Нет описания</p>
-            <div class="mt-auto">
-              <a href="#" class="btn btn-purple" target="_blank">Ссылка</a>
+      {% for present in wishlist %}
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
+          <div class="card h-100 card-transition">
+            <div class="card-img-container">
+              <img src="{% if present.image %}{{ present.image.url }}{% else %}{% static "vendor/img/present-placeholder.png" %}{% endif %}" class="card-img" alt="Card4" height="100%" width="100%" />
+            </div>
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ present.title }}</h5>
+              {% if present.description %}
+                <p class="card-text">{{ present.description }}</p>
+              {% else %}
+                <p class="card-text text-secondary">Нет описания</p>
+              {% endif %}
+              <div class="mt-auto">
+                <a href="{{ present.link }}"
+                   class="btn btn-purple"
+                   target="_blank"
+                   data-price="{{ present.price }}"
+                   data-original-text="Ссылка">Ссылка</a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
-        <div class="card h-100 card-transition">
-          <div class="card-img-container">
-            <img src="{% static "vendor/img/present-placeholder.png" %}" class="card-img" alt="Card4" height="100%" width="100%" />
-          </div>
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">12345678901234567890123456789012345678</h5>
-            <p class="card-text">1234567890123456789012345678901234567890</p>
-            <div class="mt-auto">
-              <a href="#" class="btn btn-purple" target="_blank">Ссылка</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
-        <div class="card h-100 card-transition">
-          <div class="card-img-container">
-            <img src="{% static "vendor/img/present-placeholder.png" %}" class="card-img" alt="Card4" height="100%" width="100%" />
-          </div>
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">Карта 4</h5>
-            <p class="card-text">40 СИМВОЛОВ МАКСИМУМ!</p>
-            <div class="mt-auto">
-              <a href="#" class="btn btn-purple" target="_blank">Ссылка</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
-        <div class="card h-100 card-transition">
-          <div class="card-img-container">
-            <img src="{% static "vendor/img/present-placeholder.png" %}" class="card-img" alt="Card4" height="100%" width="100%" />
-          </div>
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">Карта 4</h5>
-            <p class="card-text">40 СИМВОЛОВ МАКСИМУМ!</p>
-            <div class="mt-auto">
-              <a href="#" class="btn btn-purple" target="_blank">Ссылка</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
-        <div class="card h-100 card-transition">
-          <div class="card-img-container">
-            <img src="{% static "vendor/img/present-placeholder.png" %}" class="card-img" alt="Card4" height="100%" width="100%" />
-          </div>
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">Карта 4</h5>
-            <p class="card-text">Ручку эту хочу просто жесть</p>
-            <div class="mt-auto">
-              <a href="#" class="btn btn-purple" target="_blank">Ссылка</a>
-            </div>
-          </div>
-        </div>
-      </div>
+      {% endfor %}
     </div>
   </div>
 {% endblock content %}
+{% block scripts %}
+  <script type="text/javascript" src="{% static "vendor/js/wishlist.js" %}"></script>
+{% endblock scripts %}

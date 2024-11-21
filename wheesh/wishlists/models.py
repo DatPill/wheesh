@@ -15,5 +15,5 @@ class Present(models.Model):
     link = models.URLField()
     price = models.DecimalField(max_digits=9, decimal_places=2)
     reserved_by = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='reserved_presents', default=None, null=True, blank=True)
-    wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE)
+    wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE, related_name='presents')
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)

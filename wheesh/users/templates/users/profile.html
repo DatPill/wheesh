@@ -13,6 +13,7 @@
                   method='post'
                   enctype="multipart/form-data">
               {% csrf_token %}
+              {% if form.errors %}<div class="alert alert-danger">{{ form.errors }}</div>{% endif %}
               <div class="mb-3 text-center">
                 <img id="profile-pic" src="{% if user.image %}{{ user.image.url }}{% else %}{% static "vendor/img/user-image-placeholder.png" %}{% endif %}" alt="User Avatar" class="rounded-circle mb-3" width="150" height="150" />
                 <div class="mb-2">{{ form.image }}</div>
