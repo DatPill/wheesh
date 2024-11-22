@@ -1,0 +1,70 @@
+{% extends "wishlists/base.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static "vendor/css/new_item.css" %}" />
+{% endblock css %}
+{% block content %}
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow border-0">
+                    <div class="card-body p-4">
+                        {% if form.errors %}<div class="alert alert-danger">{{ form.errors }}</div>{% endif %}
+                        <form action='{% url 'wishlists:edit_item' present.id %}'
+                              method='post'
+                              enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mb-3 text-center">
+                                <img id="present-pic" src="{% if present.image %}{{ present.image.url }}{% else %}{% static "vendor/img/present-placeholder.png" %}{% endif %}" alt="Present Image" class="rounded mb-3" width="150" height="150" />
+                                <div class="mb-2">{{ form.image }}</div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="mb-3">
+                                    <label for="{{ form.title.id_for_label }}" class="form-label">Название подарка</label>
+                                    {{ form.title }}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="mb-3">
+                                    <label for="{{ form.description.id_for_label }}" class="form-label">Краткое пожелание (опционально)</label>
+                                    {{ form.description }}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="mb-3">
+                                    <label for="{{ form.link.id_for_label }}" class="form-label">Ссылка на подарок</label>
+                                    {{ form.link }}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="mb-3">
+                                    <label for="{{ form.price.id_for_label }}" class="form-label">Цена (руб.)</label>
+                                    {{ form.price }}
+                                </div>
+                            </div>
+                            <!-- Save button -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-purple mb-2">Сохранить изменения</button>
+                                <a href='{% url "wishlists:delete_item" present.id %}'
+                                   type="submit"
+                                   class="btn btn-danger">Удалить</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block scripts %}
+    <script>
+  function previewImage(event) {
+    const reader = new FileReader();
+    reader.onload = function () {
+      const output = document.getElementById("present-pic");
+      output.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
+    </script>
+{% endblock scripts %}

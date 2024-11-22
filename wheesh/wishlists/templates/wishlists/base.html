@@ -64,9 +64,11 @@
                     <li>
                       <a class="dropdown-item" href="{% url "users:profile" %}">Профиль</a>
                     </li>
-                    <li>
-                      <a class="dropdown-item" href="{% url "admin:index" %}">Админ-панель</a>
-                    </li>
+                    {% if user.is_superuser %}
+                      <li>
+                        <a class="dropdown-item" href="{% url "admin:index" %}">Админ-панель</a>
+                      </li>
+                    {% endif %}
                     <li>
                       <hr class="dropdown-divider" />
                     </li>
