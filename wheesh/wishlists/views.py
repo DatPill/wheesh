@@ -1,6 +1,6 @@
 from typing import Any
 
-from common.mixins import CommonContextMixin
+from common.mixins import CommonContextMixin, OwnershipRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import Q, QuerySet
 from django.urls import reverse_lazy
@@ -64,13 +64,13 @@ class NewPresentView(CommonContextMixin, LoginRequiredMixin, CreateView):
         return kwargs
 
 
-# TODO: access only for owner
-class EditPresentView(CommonContextMixin, LoginRequiredMixin, UpdateView):
+class EditPresentView(OwnershipRequiredMixin, CommonContextMixin, UpdateView):
     template_name = 'wishlists/edit_item.html'
     title = 'Изменить подарок'
     form_class = EditPresentForm
     model = Present
     success_url = reverse_lazy('wishlists:personal')
+    forbidden_message = 'Вы не можете редактировать этот подарок'
 
 
     def get_form_kwargs(self) -> dict[str, Any]:
@@ -87,7 +87,7 @@ class EditPresentView(CommonContextMixin, LoginRequiredMixin, UpdateView):
         return kwargs
 
 
-# TODO: access only for owner
-class DeletePresentView(CommonContextMixin, LoginRequiredMixin, DeleteView):
+class DeletePresentView(OwnershipRequiredMixin, CommonContextMixin, DeleteView):
     model = Present
     success_url = reverse_lazy('wishlists:personal')
+    forbidden_message = 'Вы не можете удалить этот подарок'

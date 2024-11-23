@@ -1,3 +1,6 @@
+from django.http import HttpResponseForbidden
+
+
 class CommonContextMixin:
     title = None
 
@@ -6,3 +9,13 @@ class CommonContextMixin:
         context['title'] = self.title
 
         return context
+
+
+class OwnershipRequiredMixin:
+    forbidden_message = None
+
+    def dispatch(self, request, *args, **kwargs):
+        present = self.get_object()
+        if present.user != request.user:
+            return HttpResponseForbidden(self.forbidden_message)
+        return super().dispatch(request, *args, **kwargs)
