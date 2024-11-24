@@ -4,8 +4,16 @@ from django.db import models
 class Wishlist(models.Model):
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to='wishlists_images', null=True, blank=True)
-    event_date = models.DateTimeField(null=True, blank=True)
+    event_date = models.DateField(null=True, blank=True)
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f'{self.title} ({self.user})'
+
+
+    class Meta:
+        verbose_name = 'вишлист'
+        verbose_name_plural = 'вишлисты'
 
 
 class Present(models.Model):
@@ -17,3 +25,12 @@ class Present(models.Model):
     reserved_by = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='reserved_presents', default=None, null=True, blank=True)
     wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE, related_name='presents')
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
+
+
+    def __str__(self) -> str:
+        return self.title
+
+
+    class Meta:
+        verbose_name = 'подарок'
+        verbose_name_plural = 'подарки'
