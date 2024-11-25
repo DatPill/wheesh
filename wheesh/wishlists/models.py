@@ -1,4 +1,9 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from short_url import UrlEncoder
+
+encoder = UrlEncoder(alphabet='mh8EfAByDnXqHFajGb9eT3r24utP7gvJdw6ZK5zMkURsWCYScVNpx')
 
 
 class Wishlist(models.Model):
@@ -6,6 +11,8 @@ class Wishlist(models.Model):
     image = models.ImageField(upload_to='wishlists_images', null=True, blank=True)
     event_date = models.DateField(null=True, blank=True)
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    slug_url = models.CharField(max_length=255, blank=True, unique=True)
+
 
     def __str__(self) -> str:
         return f'{self.title} ({self.user})'
@@ -14,6 +21,14 @@ class Wishlist(models.Model):
     class Meta:
         verbose_name = 'вишлист'
         verbose_name_plural = 'вишлисты'
+
+
+@receiver(post_save, sender=Wishlist)
+def generate_slug(sender, instance, created, **kwargs):
+    if created and not instance.slug_url:
+        instance.slug_url = encoder.encode_url(instance.pk)
+        instance.save(update_fields=['slug_url'])
+
 
 
 class Present(models.Model):
