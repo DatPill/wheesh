@@ -14,6 +14,13 @@ class Wishlist(models.Model):
     slug_url = models.CharField(max_length=255, blank=True, unique=True)
 
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not self.slug_url:
+            self.slug_url = encoder.encode_url(self.pk)
+            self.save(update_fields=['slug_url'])
+
+
     def __str__(self) -> str:
         return f'{self.title} ({self.user})'
 
@@ -21,13 +28,6 @@ class Wishlist(models.Model):
     class Meta:
         verbose_name = 'вишлист'
         verbose_name_plural = 'вишлисты'
-
-
-@receiver(post_save, sender=Wishlist)
-def generate_slug(sender, instance, created, **kwargs):
-    if created and not instance.slug_url:
-        instance.slug_url = encoder.encode_url(instance.pk)
-        instance.save(update_fields=['slug_url'])
 
 
 
