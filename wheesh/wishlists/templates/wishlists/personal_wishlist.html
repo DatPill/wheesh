@@ -1,0 +1,51 @@
+{% extends "wishlists/base.html" %}
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" href="{% static "vendor/css/wishlist.css" %}" />
+{% endblock css %}
+{% block content %}
+  <div class="container-lg my-4">
+    <div class="row">
+      <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
+        <a href="{% url "wishlists:new_item" %}" class="add-new-card-link">
+          <div class="card h-100 card-transition add-new-card">
+            <div class="card-body d-flex justify-content-center align-items-center">
+              <i class="fas fa-plus fa-5x text-secondary"></i>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% for present in wishlist %}
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
+          <div class="card h-100 card-transition">
+            <a href="{% url "wishlists:edit_item" present.id %}"
+               class="btn btn-sm btn-light edit-btn position-absolute top-0 end-0 me-2 mt-2 opacity-75">
+              <i class="fa-solid fa-pen fas icon-feature text-secondary"></i>
+            </a>
+            <div class="card-img-container">
+              <img src="{% if present.image %}{{ present.image.url }}{% else %}{% static "vendor/img/present-placeholder.png" %}{% endif %}" class="card-img" alt="Card4" height="100%" width="100%" />
+            </div>
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ present.title }}</h5>
+              {% if present.description %}
+                <p class="card-text">{{ present.description }}</p>
+              {% else %}
+                <p class="card-text text-secondary">Нет описания</p>
+              {% endif %}
+              <div class="mt-auto">
+                <a href="{{ present.link }}"
+                   class="btn btn-purple"
+                   target="_blank"
+                   data-price="{{ present.price }}"
+                   data-original-text="Ссылка">Ссылка</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock content %}
+{% block scripts %}
+  <script type="text/javascript" src="{% static "vendor/js/wishlist.js" %}"></script>
+{% endblock scripts %}
