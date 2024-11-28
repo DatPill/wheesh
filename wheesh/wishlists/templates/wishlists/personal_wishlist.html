@@ -5,6 +5,21 @@
 {% endblock css %}
 {% block content %}
   <div class="container-lg my-4">
+    <div class="row d-flex align-items-center justify-content-between mb-4 d-none d-lg-flex">
+      <div class="col-auto">
+        <p class="h4 text-secondary">{{ wishlist_instance.title }}</p>
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-purple" onclick="copyLink('{{ request.get_host|add:"/"|add:wishlist_instance.slug_url }}', this)" data-bs-toggle="tooltip" data-bs-placement="top" title="Скопировано!">
+          Поделиться
+        </button>
+      </div>
+    </div>
+    <div class="d-flex d-lg-none mb-4">
+      <button class="btn btn-purple w-100" onclick="copyLink('{{ request.get_host|add:"/"|add:wishlist_instance.slug_url }}')">
+        Поделиться
+      </button>
+    </div>
     <div class="row">
       <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
         <a href="{% url "wishlists:new_item" %}" class="add-new-card-link">
@@ -47,5 +62,5 @@
   </div>
 {% endblock content %}
 {% block scripts %}
-  <script type="text/javascript" src="{% static "vendor/js/wishlist.js" %}"></script>
+  <script type="text/javascript" src="{% static "vendor/js/personal_wishlist.js" %}"></script>
 {% endblock scripts %}

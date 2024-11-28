@@ -3,7 +3,7 @@ from typing import Any
 from common.mixins import CommonContextMixin, OwnershipRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import Q, QuerySet
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -29,9 +29,17 @@ class PersonalWishlistView(CommonContextMixin, LoginRequiredMixin, ListView):
     title = 'Мой вишлист'
 
     def get_queryset(self) -> QuerySet[Any]:
-        presents_queryset = Wishlist.objects.get(Q(user_id=self.request.user.id) & Q(title='Основной вишлист')).presents.all().order_by('-pk')
+        self.__wishlist = get_object_or_404(Wishlist, Q(user_id=self.request.user.id) & Q(title='Основной вишлист'))
+        presents_queryset = self.__wishlist.presents.all().order_by('-pk')
 
         return presents_queryset
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['wishlist_instance'] = self.__wishlist
+
+        return context
 
 
 class WishlistView(CommonContextMixin, LoginRequiredMixin, ListView):
@@ -40,10 +48,18 @@ class WishlistView(CommonContextMixin, LoginRequiredMixin, ListView):
     context_object_name = 'wishlist'
 
 
+    def get(self, request, *args, **kwargs):
+        self.__wishlist = get_object_or_404(Wishlist, slug_url=self.kwargs['wishlist_slug'])
+
+        if self.__wishlist.user == self.request.user:
+            return redirect('wishlists:personal')
+
+        return super().get(request, *args, **kwargs)
+
+
     def get_queryset(self) -> QuerySet[Any]:
-        __wishlist = get_object_or_404(Wishlist, slug_url=self.kwargs['wishlist_slug'])
-        self.title = f'{__wishlist.user.username} - {__wishlist.title}'
-        presents_queryset = __wishlist.presents.filter(Q(reserved_by=None) | Q(reserved_by=self.request.user)).order_by('-pk')
+        self.title = f'{self.__wishlist.user.username} - {self.__wishlist.title}'
+        presents_queryset = self.__wishlist.presents.filter(Q(reserved_by=None) | Q(reserved_by=self.request.user)).order_by('-pk')
 
         return presents_queryset
 
