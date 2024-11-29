@@ -64,6 +64,13 @@ class WishlistView(CommonContextMixin, LoginRequiredMixin, ListView):
         return presents_queryset
 
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['wishlist_instance'] = self.__wishlist
+
+        return context
+
+
 class NewPresentView(CommonContextMixin, LoginRequiredMixin, CreateView):
     template_name = 'wishlists/new_item.html'
     title = 'Добавить новый подарок'

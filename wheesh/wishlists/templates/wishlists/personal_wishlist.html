@@ -37,6 +37,10 @@
                class="btn btn-sm btn-light edit-btn position-absolute top-0 end-0 me-2 mt-2 opacity-75">
               <i class="fa-solid fa-pen fas icon-feature text-secondary"></i>
             </a>
+            <a href="{% url "wishlists:edit_item" present.id %}"
+               class="btn btn-sm btn-light edit-btn position-absolute top-0 end-0 me-2 mt-2 opacity-75 d-inline-block d-lg-none">
+              <i class="fa-solid fa-pen fas icon-feature text-secondary"></i>
+            </a>
             <div class="card-img-container">
               <img src="{% if present.image %}{{ present.image.url }}{% else %}{% static "vendor/img/present-placeholder.png" %}{% endif %}" class="card-img" alt="Card4" height="100%" width="100%" />
             </div>
