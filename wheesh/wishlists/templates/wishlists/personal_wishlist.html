@@ -10,7 +10,7 @@
         <p class="h4 text-secondary">{{ wishlist_instance.title }}</p>
       </div>
       <div class="col-auto">
-        <button class="btn btn-purple" onclick="copyLink('{{ request.get_host|add:"/"|add:wishlist_instance.slug_url }}', this)" data-bs-toggle="tooltip" data-bs-placement="top" title="Скопировано!">
+        <button class="btn btn-purple" onclick="copyLink('{{ request.get_host|add:"/"|add:wishlist_instance.slug_url }}', this)">
           Поделиться
         </button>
       </div>
