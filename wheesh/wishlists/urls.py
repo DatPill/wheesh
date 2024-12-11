@@ -3,6 +3,7 @@ from django.urls import path
 from .views import (
     DeletePresentView,
     EditPresentView,
+    ManagePresentReservationView,
     NewPresentView,
     PersonalWishlistView,
     WishlistView,
@@ -16,4 +17,5 @@ urlpatterns = [
     path('personal/present/new/', NewPresentView.as_view(), name='new_item'),
     path('personal/present/<int:pk>/edit/', EditPresentView.as_view(), name='edit_item'),
     path('personal/present/<int:pk>/delete/', DeletePresentView.as_view(), name='delete_item'),
+    path('present/<int:present_id>/reserve', ManagePresentReservationView.as_view(), name='manage_reservation'),
 ]
