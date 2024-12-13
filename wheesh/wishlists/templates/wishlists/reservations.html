@@ -5,84 +5,56 @@
 {% endblock css %}
 {% block content %}
     <div class="container-lg mb-4">
-        <div class="highlight-section mt-4">
-            <h2 class="mb-4">Преимущества платформы</h2>
-            <div class="overflow-auto pb-2">
-                <div class="row flex-nowrap g-4">
-                    <div class="col-sm-12 col-md-6 col-lg-3">
-                        <div class="card h-100 card-transition">
-                            <div class="card-img-container">
-                                <img src="{% static "vendor/img/present-placeholder.png" %}" class="card-img" alt="Card4"height="100%" width="100%" />
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text text-secondary">Нет описания</p>
-                                <div class="mt-auto">
-                                    <a href="#"
-                                       class="btn btn-purple"
-                                       target="_blank"
-                                       data-price="1000"
-                                       data-original-text="Ссылка">Ссылка</a>
+        {% if wishlists %}
+            {% for wishlist in wishlists %}
+                <div class="highlight-section mt-4">
+                    <a href="{% url 'wishlists:other' wishlist.slug_url %}"
+                       class="text-decoration-none">
+                        <h2 class="mb-4 text-secondary">{{ wishlist.title }} [{{ wishlist.user }}]</h2>
+                    </a>
+                    <div class="overflow-auto pb-2">
+                        <div class="row flex-nowrap g-4">
+                            {% for present in wishlist.reserved_presents %}
+                                <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="card h-100 card-transition">
+                                        <a href="{% url "wishlists:manage_reservation" present.id %}"
+                                           class="btn btn-sm btn-light edit-btn position-absolute top-0 end-0 me-2 mt-2 opacity-75">
+                                            <i class="fa-solid fa-minus fas icon-feature text-secondary"></i>
+                                        </a>
+                                        <a href="{% url "wishlists:manage_reservation" present.id %}"
+                                           class="btn btn-sm btn-light edit-btn position-absolute top-0 end-0 me-2 mt-2 opacity-75 d-inline-block d-lg-none">
+                                            <i class="fa-solid fa-minus fas icon-feature text-secondary"></i>
+                                        </a>
+                                        <div class="card-img-container">
+                                            <img src="{% if present.image %}{{ present.image.url }}{% else %}{% static "vendor/img/present-placeholder.png" %}{% endif %}" class="card-img" alt="Card4"height="100%" width="100%" />
+                                        </div>
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title">{{ present.title }}</h5>
+                                            {% if present.description %}
+                                                <p class="card-text">{{ present.description }}</p>
+                                            {% else %}
+                                                <p class="card-text text-secondary">Нет описания</p>
+                                            {% endif %}
+                                            <div class="mt-auto">
+                                                <a href="{{ present.link }}"
+                                                   class="btn btn-purple"
+                                                   target="_blank"
+                                                   data-price="1000"
+                                                   data-original-text="Ссылка">Ссылка</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-3">
-                        <div class="card h-100 card-transition">
-                            <div class="card-img-container">
-                                <img src="{% static "vendor/img/present-placeholder.png" %}" class="card-img" alt="Card4"height="100%" width="100%" />
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text text-secondary">Нет описания</p>
-                                <div class="mt-auto">
-                                    <a href="#"
-                                       class="btn btn-purple"
-                                       target="_blank"
-                                       data-price="1000"
-                                       data-original-text="Ссылка">Ссылка</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-3">
-                        <div class="card h-100 card-transition">
-                            <div class="card-img-container">
-                                <img src="{% static "vendor/img/present-placeholder.png" %}" class="card-img" alt="Card4"height="100%" width="100%" />
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text text-secondary">Нет описания</p>
-                                <div class="mt-auto">
-                                    <a href="#"
-                                       class="btn btn-purple"
-                                       target="_blank"
-                                       data-price="1000"
-                                       data-original-text="Ссылка">Ссылка</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-3">
-                        <div class="card h-100 card-transition">
-                            <div class="card-img-container">
-                                <img src="{% static "vendor/img/present-placeholder.png" %}" class="card-img" alt="Card4"height="100%" width="100%" />
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text text-secondary">Нет описания</p>
-                                <div class="mt-auto">
-                                    <a href="#"
-                                       class="btn btn-purple"
-                                       target="_blank"
-                                       data-price="1000"
-                                       data-original-text="Ссылка">Ссылка</a>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-sm-12 text-center mt-4">
+                <p class="text-secondary mb-1">Пусто...</p>
+                <p class="text-secondary mb-1">( o.o)</p>
             </div>
-        </div>
+        {% endif %}
     </div>
 {% endblock content %}

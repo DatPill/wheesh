@@ -23,7 +23,7 @@
                   <i class="fa-solid fa-minus fas icon-feature text-secondary"></i>
                 {% endif %}
               </a>
-              <a href="#"
+              <a href="{% url "wishlists:manage_reservation" present.id %}"
                  class="btn btn-sm btn-light edit-btn position-absolute top-0 end-0 me-2 mt-2 opacity-75 d-inline-block d-lg-none">
                 {% if not present.reserved_by %}
                   <i class="fa-solid fa-plus fas icon-feature text-secondary"></i>

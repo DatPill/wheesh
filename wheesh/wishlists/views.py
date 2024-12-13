@@ -2,6 +2,7 @@ from typing import Any
 
 from common.mixins import CommonContextMixin, OwnershipRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Prefetch
 from django.db.models.query import Q, QuerySet
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
@@ -146,6 +147,29 @@ class ManagePresentReservationView(View):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-class ReservationsView(CommonContextMixin, LoginRequiredMixin, TemplateView):
+class ReservationsView(CommonContextMixin, LoginRequiredMixin, ListView):
     template_name = 'wishlists/reservations.html'
     title = 'Я дарю'
+    model = Present
+    context_object_name = 'wishlists'
+    title = 'Мой вишлист'
+
+    def get_queryset(self) -> QuerySet[Any]:
+        user = self.request.user
+
+        # TODO: profile this query, might be faster
+        # return Wishlist.objects.prefetch_related(
+            # Prefetch(
+                # 'presents',
+                # queryset=Present.objects.filter(reserved_by=user),
+                # to_attr='reserved_presents'
+            # )
+        # ).filter(presents__reserved_by=user).distinct()
+
+        return Wishlist.objects.filter(presents__reserved_by=user).distinct().prefetch_related(
+            Prefetch(
+                'presents',
+                queryset=Present.objects.filter(reserved_by=user),
+                to_attr='reserved_presents'
+            )
+        )
