@@ -144,3 +144,8 @@ class ManagePresentReservationView(View):
 
         present.save()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+class ReservationsView(CommonContextMixin, LoginRequiredMixin, TemplateView):
+    template_name = 'wishlists/reservations.html'
+    title = 'Я дарю'

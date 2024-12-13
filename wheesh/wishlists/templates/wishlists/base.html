@@ -44,7 +44,8 @@
                    href="{% url "wishlists:personal" %}">Я хочу</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Я дарю</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'reservations' %}active{% endif %}"
+                   href="{% url "wishlists:reservations" %}">Я дарю</a>
               </li>
             </ul>
           {% endif %}

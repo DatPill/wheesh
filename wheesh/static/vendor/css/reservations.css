@@ -1,0 +1,77 @@
+/* https://colorhunt.co/palette/ff8a8af4deb3f0eaaccce0ac */
+/* https://fonts.google.com/selection?preview.text=Wheesh */
+
+html {
+  height: 100vh;
+}
+
+body {
+  font-family: "Rubik", sans-serif;
+  background: linear-gradient(180deg, #f0f4f8, #ffffff);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+.btn-purple {
+  background-color: #6f42c1;
+  color: #fff;
+  transition: background-color 0.2s;
+}
+
+.btn-purple:hover {
+  background-color: #5b34a0;
+  color: white;
+}
+
+.btn-purple:active {
+  border-color: #5b34a0 !important;
+  color: #5b34a0 !important;
+}
+
+.btn-purple:focus-visible {
+  background-color: #5b34a0;
+  color: white;
+  border-color: #7c46d8;
+  border-width: 4px;
+}
+
+.highlight-section {
+  background: linear-gradient(145deg, #e0eaff, #ffffff);
+  padding: 40px 20px;
+  border-radius: 12px;
+}
+
+.feature-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.icon-feature {
+  font-size: 2.5rem;
+  color: #6f42c1;
+}
+
+.custom-divider {
+  width: 50px;
+  height: 4px;
+  background-color: #6f42c1;
+  margin: 20px auto;
+  border-radius: 2px;
+}
+
+.overflow-auto::-webkit-scrollbar {
+  height: 4px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb {
+  background: #6e42c1a4;
+  border-radius: 4px;
+}
+
+.overflow-auto::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
