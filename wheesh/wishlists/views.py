@@ -2,7 +2,9 @@ from typing import Any
 
 from common.mixins import CommonContextMixin, OwnershipRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Prefetch
 from django.db.models.query import Q, QuerySet
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -11,6 +13,7 @@ from django.views.generic import (
     ListView,
     TemplateView,
     UpdateView,
+    View,
 )
 
 from .forms import EditPresentForm, NewPresentForm
@@ -129,3 +132,44 @@ class DeletePresentView(OwnershipRequiredMixin, CommonContextMixin, DeleteView):
     model = Present
     success_url = reverse_lazy('wishlists:personal')
     forbidden_message = 'Вы не можете удалить этот подарок'
+
+
+class ManagePresentReservationView(View):
+    def get(self, request, present_id):  # TODO: make it POST request
+        present = get_object_or_404(Present, pk=present_id)
+
+        if present.reserved_by:
+            present.reserved_by = None
+        else:
+            present.reserved_by = request.user
+
+        present.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+class ReservationsView(CommonContextMixin, LoginRequiredMixin, ListView):
+    template_name = 'wishlists/reservations.html'
+    title = 'Я дарю'
+    model = Present
+    context_object_name = 'wishlists'
+    title = 'Мой вишлист'
+
+    def get_queryset(self) -> QuerySet[Any]:
+        user = self.request.user
+
+        # TODO: profile this query, might be faster
+        # return Wishlist.objects.prefetch_related(
+            # Prefetch(
+                # 'presents',
+                # queryset=Present.objects.filter(reserved_by=user),
+                # to_attr='reserved_presents'
+            # )
+        # ).filter(presents__reserved_by=user).distinct()
+
+        return Wishlist.objects.filter(presents__reserved_by=user).distinct().prefetch_related(
+            Prefetch(
+                'presents',
+                queryset=Present.objects.filter(reserved_by=user),
+                to_attr='reserved_presents'
+            )
+        )
