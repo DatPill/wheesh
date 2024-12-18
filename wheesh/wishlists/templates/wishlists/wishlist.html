@@ -82,15 +82,15 @@
                 </div>
               </div>
             </div>
-          </div>
-        {% endif %}
-      {% endfor %}
-    {% else %}
-      <div class="col-sm-12 text-center mt-4">
-        <p class="text-secondary mb-1">Пусто...</p>
-        <p class="text-secondary mb-1">( o.o)</p>
-      </div>
-    {% endif %}
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <div class="col-sm-12 text-center mt-4">
+          <p class="text-secondary mb-1">Пусто...</p>
+          <p class="text-secondary mb-1">( o.o)</p>
+        </div>
+      {% endif %}
+    </div>
   </div>
 {% endblock content %}
 {% block scripts %}
