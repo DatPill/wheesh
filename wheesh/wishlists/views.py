@@ -62,7 +62,7 @@ class WishlistView(CommonContextMixin, LoginRequiredMixin, ListView):
 
     def get_queryset(self) -> QuerySet[Any]:
         self.title = f'{self.__wishlist.user.username} - {self.__wishlist.title}'
-        presents_queryset = self.__wishlist.presents.filter(Q(reserved_by=None) | Q(reserved_by=self.request.user)).order_by('-pk')
+        presents_queryset = self.__wishlist.presents.order_by('-pk')
 
         return presents_queryset
 
@@ -156,15 +156,6 @@ class ReservationsView(CommonContextMixin, LoginRequiredMixin, ListView):
 
     def get_queryset(self) -> QuerySet[Any]:
         user = self.request.user
-
-        # TODO: profile this query, might be faster
-        # return Wishlist.objects.prefetch_related(
-            # Prefetch(
-                # 'presents',
-                # queryset=Present.objects.filter(reserved_by=user),
-                # to_attr='reserved_presents'
-            # )
-        # ).filter(presents__reserved_by=user).distinct()
 
         return Wishlist.objects.filter(presents__reserved_by=user).distinct().prefetch_related(
             Prefetch(
