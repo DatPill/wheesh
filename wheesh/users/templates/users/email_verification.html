@@ -1,0 +1,24 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" href="{% static "vendor/css/email_verification.css" %}" />
+{% endblock css %}
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center align-items-center vh-100">
+      <div class="col-md-7 col-lg-4">
+        <div class="card shadow border-0">
+          <div class="card-body p-4">
+            <h3 class="text-center mb-4">
+              <b>Whee</b>sh
+            </h3>
+            <p class="text-center mt-3 mb-3 h5">Ваш аккаунт успешно активирован!</p>
+            <div class="d-grid mb-3">
+              <a href={% url "users:login" %} class="btn btn-purple">Войти</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
