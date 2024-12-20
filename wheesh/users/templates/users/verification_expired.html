@@ -8,15 +8,18 @@
     <div class="row justify-content-center align-items-center vh-100">
       <div class="col-md-7 col-lg-4">
         <div class="card shadow border-0">
+          {% if messages %}
+            <div class="alert alert-success">
+              {% for message in messages %}{{ message }}{% endfor %}
+            </div>
+          {% endif %}
           <div class="card-body p-4">
             <h3 class="text-center mb-4">
               <b>Whee</b>sh
             </h3>
-            <p class="text-center mt-3 mb-3 h5">Срок подтверждения почты истёк</p>
-            <p class="text-center mt-3 mb-3 h5">( ._.)</p>
-            <div class="d-grid mb-3">
-              <a href={% url "users:login" %} class="btn btn-purple">Отправить заного</a>
-            </div>
+            <p class="text-center text-secondary mt-3 mb-3 h6">Срок подтверждения этой ссылки истёк... ( ._.)</p>
+            {% comment %} TODO: add button to resend it (3 emails per hour!!!) {% endcomment %}
+            <p class="text-center mt-3 mb-3 h5">Но новая уже летит вам на почту, проверяйте!</p>
           </div>
         </div>
       </div>
