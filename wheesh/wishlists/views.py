@@ -32,11 +32,16 @@ class PersonalWishlistView(CommonContextMixin, LoginRequiredMixin, ListView):
     title = 'Мой вишлист'
 
     def get_queryset(self) -> QuerySet[Any]:
-        # TODO: if not found?
-        self.__wishlist = Wishlist.objects.get(Q(user_id=self.request.user.id) & Q(title='Основной вишлист'))
-        presents_queryset = self.__wishlist.presents.all().order_by('-pk')
+        wishlist = Wishlist.objects.filter(Q(user_id=self.request.user.id) & Q(title='Основной вишлист'))
+        if wishlist.exists():
+            self.__wishlist = wishlist.first()
+            presents_queryset = self.__wishlist.presents.all().order_by('-pk')
 
-        return presents_queryset
+            return presents_queryset
+
+        self.__wishlist = Wishlist.objects.none()
+        return self.__wishlist
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -136,16 +141,20 @@ class DeletePresentView(OwnershipRequiredMixin, CommonContextMixin, DeleteView):
 
 class ManagePresentReservationView(View):
     def get(self, request, present_id):  # TODO: make it POST request
-        # TODO: if not found?
-        present = Present.objects.get(pk=present_id)
+        present = Present.objects.filter(pk=present_id)
 
-        if present.reserved_by:
-            present.reserved_by = None
-        else:
-            present.reserved_by = request.user
+        if present.exists():
+            present = present.first()
 
-        present.save()
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            if present.reserved_by:
+                present.reserved_by = None
+            else:
+                present.reserved_by = request.user
+
+            present.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        return HttpResponseNotFound('Такого подарка не существует')
 
 
 class ReservationsView(CommonContextMixin, LoginRequiredMixin, ListView):
