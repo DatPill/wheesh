@@ -1,16 +1,21 @@
 from datetime import timedelta
-from uuid import uuid4
+from random import randint
 
+from common.notifications import EmailLimiter, EmailSender, EmailVerificationService
 from django.utils.timezone import now
 from users.models import EmailVerification, User
 
+email_sender = EmailSender()
+rate_limiter = EmailLimiter()
+email_verification_service = EmailVerificationService(email_sender, rate_limiter)
 
-def send_verification_email(user: User) -> None:
-    time_now  = now()
-    one_hour_ago = time_now - timedelta(hours=1)
-    verifications_count: int = EmailVerification.objects.filter(user=user, created__gte=one_hour_ago).count()
 
-    if verifications_count <= 3:
-        expiration = time_now + timedelta(hours=48)
-        record = EmailVerification.objects.create(code=uuid4(), user=user, expiration=expiration)
-        record.send_email()
+def generate_verification_code(length: int=4):
+    code = randint(1000, int('9'*length))
+    return code
+
+
+def create_verification_object(user_id: int, code: int) -> EmailVerification:
+    expiration = now() + timedelta(hours=48)
+    verivication_obj = EmailVerification.objects.create(code=code, user_id=user_id, expiration=expiration)
+    return verivication_obj

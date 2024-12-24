@@ -4,8 +4,12 @@ from django.contrib.auth.forms import (
     UserChangeForm,
     UserCreationForm,
 )
-from users.models import EmailVerification, User
-from users.utils import send_verification_email
+from users.models import User
+from users.utils import (
+    create_verification_object,
+    email_verification_service,
+    generate_verification_code,
+)
 
 
 class UserLoginForm(AuthenticationForm):
@@ -27,7 +31,10 @@ class UserRegistrationForm(UserCreationForm):
         user =  super().save(commit=True)
 
         if is_final:  # TODO: fix double form saving in users.views.UserRegistrationView.form_valid
-            send_verification_email(user)
+            code = generate_verification_code()
+            create_verification_object(user.id, code)
+
+            email_verification_service.send_verification_web(user.id, user.email, user.username, code)
 
         return user
 

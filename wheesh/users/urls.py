@@ -15,6 +15,6 @@ urlpatterns = [
     path('logout/', UserLogoutView.as_view(), name='logout'),
     path('register/', UserRegistrationView.as_view(), name='register'),
     path('profile/', UserProfileView.as_view(), name='profile'),
-    path('verify/<str:email>/<uuid:code>/', EmailVerificationView.as_view(), name='verify'),
-    path('expired/<str:email>/<uuid:code>/', VerificationExpiredView.as_view(), name='verification_expired'),
+    path('verify/<str:email>/<int:code>/', EmailVerificationView.as_view(), name='verify'),
+    path('expired/<str:email>/<int:code>/', VerificationExpiredView.as_view(), name='verification_expired'),
 ]

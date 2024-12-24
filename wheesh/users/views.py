@@ -14,7 +14,11 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
 from users.forms import UserLoginForm, UserProfileForm, UserRegistrationForm
 from users.models import EmailVerification, User
-from users.utils import send_verification_email
+from users.utils import (
+    create_verification_object,
+    email_verification_service,
+    generate_verification_code,
+)
 from wishlists.models import Wishlist
 
 
@@ -118,8 +122,9 @@ class VerificationExpiredView(CommonContextMixin, SuccessMessageMixin, TemplateV
             if user.email_verified:
                 return HttpResponseRedirect(reverse('users:profile'))
 
-            # at the moment can send only 3 per hour, sends with every reload
-            send_verification_email(user)
+            code = generate_verification_code()
+            create_verification_object(user.id, code)
+            email_verification_service.send_verification_web(user.id, user.email, user.username, code)
             return super().get(request, *args, **kwargs)
         else:
             return HttpResponseNotFound('Такой ссылки не существует')

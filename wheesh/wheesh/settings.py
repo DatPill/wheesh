@@ -140,5 +140,9 @@ LOGIN_URL = '/users/login/'
 
 # Email settings
 
-# EMAIL_BACKEND = os.environ['EMAIL_BACKEND']
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = os.environ['EMAIL_BACKEND']
+
+EMAIL_ADDRESS = os.environ['EMAIL_ADDRESS']
+
+EMAIL_LIMIT = 3  # Maximum number of emails per PERIOD_LIMIT
+LIMIT_PERIOD = 1  # In hours
