@@ -4,8 +4,8 @@ from common.mixins import CommonContextMixin, OwnershipRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Prefetch
 from django.db.models.query import Q, QuerySet
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpResponseNotFound, HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -32,10 +32,15 @@ class PersonalWishlistView(CommonContextMixin, LoginRequiredMixin, ListView):
     title = 'Мой вишлист'
 
     def get_queryset(self) -> QuerySet[Any]:
-        self.__wishlist = get_object_or_404(Wishlist, Q(user_id=self.request.user.id) & Q(title='Основной вишлист'))
-        presents_queryset = self.__wishlist.presents.all().order_by('-pk')
+        wishlist = Wishlist.objects.filter(Q(user_id=self.request.user.id) & Q(title='Основной вишлист'))
+        if wishlist.exists():
+            self.__wishlist = wishlist.first()
+            presents_queryset = self.__wishlist.presents.all().order_by('-pk')
 
-        return presents_queryset
+            return presents_queryset
+
+        self.__wishlist = Wishlist.objects.none()
+        return self.__wishlist
 
 
     def get_context_data(self, **kwargs):
@@ -50,15 +55,16 @@ class WishlistView(CommonContextMixin, LoginRequiredMixin, ListView):
     model = Wishlist
     context_object_name = 'wishlist'
 
-
     def get(self, request, *args, **kwargs):
-        self.__wishlist = get_object_or_404(Wishlist, slug_url=self.kwargs['wishlist_slug'])
+        wishlist = Wishlist.objects.filter(slug_url=self.kwargs['wishlist_slug'])
+        if wishlist.exists():
+            self.__wishlist = wishlist.first()
+            if self.__wishlist.user == self.request.user:
+                return redirect('wishlists:personal')
 
-        if self.__wishlist.user == self.request.user:
-            return redirect('wishlists:personal')
-
-        return super().get(request, *args, **kwargs)
-
+            return super().get(request, *args, **kwargs)
+        else:
+            return HttpResponseNotFound('Такого вишлиста не существует ( ._.\')')
 
     def get_queryset(self) -> QuerySet[Any]:
         self.title = f'{self.__wishlist.user.username} - {self.__wishlist.title}'
@@ -113,7 +119,6 @@ class EditPresentView(OwnershipRequiredMixin, CommonContextMixin, UpdateView):
     success_url = reverse_lazy('wishlists:personal')
     forbidden_message = 'Вы не можете редактировать этот подарок'
 
-
     def get_form_kwargs(self) -> dict[str, Any]:
         kwargs: dict[str, Any] = super().get_form_kwargs()
 
@@ -136,15 +141,20 @@ class DeletePresentView(OwnershipRequiredMixin, CommonContextMixin, DeleteView):
 
 class ManagePresentReservationView(View):
     def get(self, request, present_id):  # TODO: make it POST request
-        present = get_object_or_404(Present, pk=present_id)
+        present = Present.objects.filter(pk=present_id)
 
-        if present.reserved_by:
-            present.reserved_by = None
-        else:
-            present.reserved_by = request.user
+        if present.exists():
+            present = present.first()
 
-        present.save()
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            if present.reserved_by:
+                present.reserved_by = None
+            else:
+                present.reserved_by = request.user
+
+            present.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        return HttpResponseNotFound('Такого подарка не существует')
 
 
 class ReservationsView(CommonContextMixin, LoginRequiredMixin, ListView):

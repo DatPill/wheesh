@@ -12,13 +12,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ['DJANGO_DEBUG'].lower() in ("true", "1", "t")
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
+
+DOMAIN_NAME = os.getenv("DJANGO_DOMAIN_NAME", "http://localhost:8000")
 
 
 # Application definition
@@ -77,7 +77,7 @@ DATABASES = {
         'PASSWORD': os.environ['DB_PASSWORD'],
         'HOST': os.environ['DB_HOST'],
         'PORT': os.environ['DB_PORT'],
-    }
+    },
 }
 
 
@@ -137,3 +137,12 @@ AUTH_USER_MODEL = 'users.User'
 # Default login url
 
 LOGIN_URL = '/users/login/'
+
+# Email settings
+
+EMAIL_BACKEND = os.environ['EMAIL_BACKEND']
+
+EMAIL_ADDRESS = os.environ['EMAIL_ADDRESS']
+
+EMAIL_LIMIT = 3  # Maximum number of emails per PERIOD_LIMIT
+LIMIT_PERIOD = 1  # In hours
