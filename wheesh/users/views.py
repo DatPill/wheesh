@@ -4,7 +4,14 @@ from common.mixins import CommonContextMixin
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import (
+    LoginView,
+    LogoutView,
+    PasswordResetCompleteView,
+    PasswordResetConfirmView,
+    PasswordResetDoneView,
+    PasswordResetView,
+)
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models.base import Model
 from django.http import HttpResponseNotFound, HttpResponseRedirect
@@ -12,7 +19,13 @@ from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
-from users.forms import UserLoginForm, UserProfileForm, UserRegistrationForm
+from users.forms import (
+    UserForgotPasswordForm,
+    UserLoginForm,
+    UserProfileForm,
+    UserRegistrationForm,
+    UserSetNewPasswordForm,
+)
 from users.models import EmailVerification, User
 from users.utils import (
     create_verification_object,
@@ -128,3 +141,30 @@ class VerificationExpiredView(CommonContextMixin, SuccessMessageMixin, TemplateV
             return super().get(request, *args, **kwargs)
         else:
             return HttpResponseNotFound('Такой ссылки не существует')
+
+
+
+class UserPasswordResetView(CommonContextMixin, PasswordResetView):
+    title = 'Запрос восстановления пароля'
+    template_name = 'users/password_reset.html'
+    form_class = UserForgotPasswordForm
+    success_url = reverse_lazy('users:password_reset_done')
+    subject_template_name = 'users/email/password_subject_reset_mail.txt'
+    email_template_name = 'users/email/password_reset_mail.html'
+
+
+class UserPasswordResetDoneView(CommonContextMixin, PasswordResetDoneView):
+    title = 'Запрос на восстановление отправлен'
+    template_name = 'users/password_reset_done.html'
+
+
+class UserPasswordResetConfirmView(CommonContextMixin, PasswordResetConfirmView):
+    title = 'Сброс пароля'
+    template_name = 'users/password_reset_confirm.html'
+    success_url = reverse_lazy('users:password_reset_complete')
+    form_class = UserSetNewPasswordForm
+
+
+class UserPasswordResetCompleteView(CommonContextMixin, PasswordResetCompleteView):
+    title = 'Пароль успешно изменен'
+    template_name = 'users/password_reset_complete.html'
