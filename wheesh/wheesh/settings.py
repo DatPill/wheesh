@@ -117,9 +117,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+
+
+if DEBUG:
+    STATICFILES_DIRS = [
+        BASE_DIR / 'static',
+    ]
+else:
+    STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_URL = 'media/'
 
@@ -140,7 +145,8 @@ LOGIN_URL = '/users/login/'
 
 # Email settings
 
-EMAIL_BACKEND = os.environ['EMAIL_BACKEND']
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 EMAIL_ADDRESS = os.environ['EMAIL_ADDRESS']
 
