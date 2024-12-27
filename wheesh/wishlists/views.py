@@ -1,6 +1,5 @@
 from typing import Any
 
-from common.mixins import CommonContextMixin, OwnershipRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Prefetch
 from django.db.models.query import Q, QuerySet
@@ -16,8 +15,9 @@ from django.views.generic import (
     View,
 )
 
-from .forms import EditPresentForm, NewPresentForm
-from .models import Present, Wishlist
+from common.mixins import CommonContextMixin, OwnershipRequiredMixin
+from wishlists.forms import EditPresentForm, NewPresentForm
+from wishlists.models import Present, Wishlist
 
 
 class IndexView(CommonContextMixin, TemplateView):
@@ -29,7 +29,7 @@ class PersonalWishlistView(CommonContextMixin, LoginRequiredMixin, ListView):
     template_name = 'wishlists/personal_wishlist.html'
     model = Wishlist
     context_object_name = 'wishlist'
-    title = 'Мой вишлист'
+    title = 'Мой вишлист - Wheesh'
 
     def get_queryset(self) -> QuerySet[Any]:
         wishlist = Wishlist.objects.filter(Q(user_id=self.request.user.id) & Q(title='Основной вишлист'))
@@ -82,7 +82,7 @@ class WishlistView(CommonContextMixin, LoginRequiredMixin, ListView):
 
 class NewPresentView(CommonContextMixin, LoginRequiredMixin, CreateView):
     template_name = 'wishlists/new_item.html'
-    title = 'Добавить новый подарок'
+    title = 'Добавить новый подарок - Wheesh'
     form_class = NewPresentForm
     model = Present
     success_url = reverse_lazy('wishlists:personal')
@@ -113,7 +113,7 @@ class NewPresentView(CommonContextMixin, LoginRequiredMixin, CreateView):
 
 class EditPresentView(OwnershipRequiredMixin, CommonContextMixin, UpdateView):
     template_name = 'wishlists/edit_item.html'
-    title = 'Изменить подарок'
+    title = 'Изменить подарок - Wheesh'
     form_class = EditPresentForm
     model = Present
     success_url = reverse_lazy('wishlists:personal')
@@ -159,10 +159,9 @@ class ManagePresentReservationView(View):
 
 class ReservationsView(CommonContextMixin, LoginRequiredMixin, ListView):
     template_name = 'wishlists/reservations.html'
-    title = 'Я дарю'
+    title = 'Я дарю - Wheesh'
     model = Present
     context_object_name = 'wishlists'
-    title = 'Мой вишлист'
 
     def get_queryset(self) -> QuerySet[Any]:
         user = self.request.user

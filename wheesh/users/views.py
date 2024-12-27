@@ -1,6 +1,5 @@
 from typing import Any
 
-from common.mixins import CommonContextMixin
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -19,6 +18,8 @@ from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
+
+from common.mixins import CommonContextMixin
 from users.forms import (
     UserForgotPasswordForm,
     UserLoginForm,
@@ -37,7 +38,7 @@ from wishlists.models import Wishlist
 
 class UserRegistrationView(CommonContextMixin, SuccessMessageMixin, CreateView):
     template_name = 'users/register.html'
-    title = 'Wheesh - Регистрация'
+    title = 'Регистрация - Wheesh'
     form_class = UserRegistrationForm
     model = User
     success_url = reverse_lazy('users:login')
@@ -51,7 +52,7 @@ class UserRegistrationView(CommonContextMixin, SuccessMessageMixin, CreateView):
 
 class UserLoginView(CommonContextMixin, LoginView):
     template_name = 'users/login.html'
-    title = 'Wheesh - Вход'
+    title = 'Вход - Wheesh'
     next_page = '/'
     form_class = UserLoginForm
     model = User
@@ -78,7 +79,7 @@ class UserLogoutView(LoginRequiredMixin, LogoutView):
 
 class UserProfileView(CommonContextMixin, LoginRequiredMixin, UpdateView):
     template_name = 'users/profile.html'
-    title = 'Wheesh - Профиль'
+    title = 'Профиль - Wheesh'
     model = User
     form_class = UserProfileForm
     success_url = reverse_lazy('users:profile')
@@ -101,7 +102,7 @@ class UserProfileView(CommonContextMixin, LoginRequiredMixin, UpdateView):
 
 
 class EmailVerificationView(CommonContextMixin, TemplateView):
-    title = 'Подтверждение электронной почты'
+    title = 'Подтверждение электронной почты - Wheesh'
     template_name = 'users/email_verification.html'
 
     def get(self, request, *args, **kwargs):
@@ -124,7 +125,7 @@ class EmailVerificationView(CommonContextMixin, TemplateView):
 
 
 class VerificationExpiredView(CommonContextMixin, SuccessMessageMixin, TemplateView):
-    title = 'Ссылка недействительна'
+    title = 'Ссылка недействительна - Wheesh'
     template_name = 'users/verification_expired.html'
 
     def get(self, request, *args, **kwargs):
@@ -145,7 +146,7 @@ class VerificationExpiredView(CommonContextMixin, SuccessMessageMixin, TemplateV
 
 
 class UserPasswordResetView(CommonContextMixin, PasswordResetView):
-    title = 'Запрос восстановления пароля'
+    title = 'Запрос восстановления пароля - Wheesh'
     template_name = 'users/password_reset.html'
     form_class = UserForgotPasswordForm
     success_url = reverse_lazy('users:password_reset_done')
@@ -154,17 +155,17 @@ class UserPasswordResetView(CommonContextMixin, PasswordResetView):
 
 
 class UserPasswordResetDoneView(CommonContextMixin, PasswordResetDoneView):
-    title = 'Запрос на восстановление отправлен'
+    title = 'Запрос на восстановление отправлен - Wheesh'
     template_name = 'users/password_reset_done.html'
 
 
 class UserPasswordResetConfirmView(CommonContextMixin, PasswordResetConfirmView):
-    title = 'Сброс пароля'
+    title = 'Сброс пароля - Wheesh'
     template_name = 'users/password_reset_confirm.html'
     success_url = reverse_lazy('users:password_reset_complete')
     form_class = UserSetNewPasswordForm
 
 
 class UserPasswordResetCompleteView(CommonContextMixin, PasswordResetCompleteView):
-    title = 'Пароль успешно изменен'
+    title = 'Пароль успешно изменен - Wheesh'
     template_name = 'users/password_reset_complete.html'
