@@ -149,6 +149,12 @@ if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 EMAIL_ADDRESS = os.environ['EMAIL_ADDRESS']
+EMAIL_HOST = os.environ['EMAIL_HOST']
+EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
+EMAIL_PORT = os.environ['EMAIL_PORT']
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+
 
 EMAIL_LIMIT = 3  # Maximum number of emails per PERIOD_LIMIT
 LIMIT_PERIOD = 1  # In hours
